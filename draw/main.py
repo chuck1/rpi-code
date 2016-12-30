@@ -74,6 +74,9 @@ def set_tip_direction(v): pass
 
 
 
+
+sys.exit(0)
+
 while true:
 	# main loop
 	
