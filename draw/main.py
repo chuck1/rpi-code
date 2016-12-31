@@ -4,6 +4,8 @@ import numpy as np
 import time
 import RPi.GPIO as io
 
+io.setmode(io.BCM)
+
 # a - distnace between wheel centers
 # b - distance from oeigin to pen
 # c - distance from origin to rotation center
@@ -31,9 +33,9 @@ class Motor(object):
 	
 		self.p = io.PWM(pin_1, 50)
 
-		self.p.start(20)
+		self.p.start(0)
 	
-	def set_motor(self, s):
+	def set(self, s):
 		io.output(self.pin_onoff, True)
 
 		if s>0:
@@ -43,10 +45,10 @@ class Motor(object):
 			io.output(self.pin_1, False)
 			io.output(self.pin_2, True)
 
-		p.ChangeDutyCycle(abs(s))
+		self.p.ChangeDutyCycle(abs(s))
 
-	def stop():
-		io.output(pin_onoff, False)
+	def stop(self):
+		io.output(self.pin_onoff, False)
 
 
 
@@ -139,7 +141,7 @@ def calc_motor_speed(v):
 	return (s1, s2)
 
 def set_motor_speed(s1, s2):
-
+	pass
 
 def set_tip_direction(v):
 	pass
@@ -149,6 +151,18 @@ def set_tip_direction(v):
 
 calc_motor_speed(np.array([[1],[1]]))
 
+m1 = Motor(18, 4, 17)
+m2 = Motor(2, 3, 15)
+
+m1.set(50)
+m2.set(50)
+
+time.sleep(1)
+
+m1.stop()
+m2.stop()
+
+io.cleanup()
 
 sys.exit(0)
 
