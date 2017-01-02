@@ -48,11 +48,13 @@ class Robot(object):
 		self.C1 = 0.05
 		self.C2 = 0.05
 		
+		
+		self.wheel_speed = 25.0
+		
 	def draw(self, image):
 		self.image = image
 
 	def run(self):
-	
 	
 		t00 = time.time()
 		t0 = t00
@@ -70,9 +72,15 @@ class Robot(object):
 			
 			print "p [{:16.2f},{:16.2f}] a {:16.2f}".format(self.position[0][0], self.position[1][0], self.orientation)
 			
-			break
-			if (t1 - t00) > 0.1:
+			if (t1 - t00) > 1.0:
 				break
+
+		self.m1.stop()
+		self.m2.stop()
+
+	def set_motor_speed(self):
+		self.m1.set(self.s1)
+		self.m2.set(self.s2)
 
 	def update_position(self, dt):
 		# based on current motor speeds and time passed
@@ -199,8 +207,8 @@ class Robot(object):
 		s_max = max(abs(s1), abs(s2))
 		print "s_max", s_max	
 		
-		s1 = s1 / s_max * 100.0
-		s2 = s2 / s_max * 100.0
+		s1 = s1 / s_max * self.wheel_speed
+		s2 = s2 / s_max * self.wheel_speed
 	
 		print "s1",s1
 		print "s2",s2
@@ -213,6 +221,8 @@ class Robot(object):
 		self.s2 = s2
 
 		self.calc_wheel_center_speed()
+
+		self.set_motor_speed()
 
 		return (s1, s2)
 
